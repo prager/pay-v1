@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://ci3-test.jlkconsulting.info';
+$config['base_url'] = 'https://pay-v1.jlkconsulting.info';
 
 /*
 |--------------------------------------------------------------------------
@@ -538,6 +538,3 @@ $config['proxy_ips'] = '';
 | Inspired by: https://www.itsolutionstuff.com/post/stripe-payment-gateway-integration-in-codeigniter-exampleexample.html
 |
 */
-$config['stripe_key'] = 'pk_test_51IObmSF4ay23uq8TbsPj0Vhu5qi0exg22y4ru3cJ5rnqmLBPjF4CjLw4rDUgV3IIVloqxpV0nZ57RLY1t6IJG0U700Qmwht29x';
-
-$config['stripe_secret'] = 'sk_test_51IObmSF4ay23uq8Tzffayrv1xhXuuivKWrrqauMm9RnY1Htd7Zn7ISBrs3wYwdxDPq6ezseBx62vu7sObjMLMafC00bOhPPUt4';
