@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CI 3 Payments Testing</title>
+    <title>Pay v1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style type="text/css">
@@ -30,8 +30,9 @@
 <div class="container">
 	<div class="row">
 		<div class="col co-md-offset-3 text-center">
-			<h1>Stripe Payment Integration Test</h1>
-			Inspired by <a href="https://www.itsolutionstuff.com/post/stripe-payment-gateway-integration-in-codeigniter-exampleexample.html" target="_blank">Hardik Savani</a>
+			<h1>JLK Payments</h1>
+			Inspired by <a href="https://www.itsolutionstuff.com/post/stripe-payment-gateway-integration-in-codeigniter-exampleexample.html" target="_blank">Hardik Savani</a><br>
+            <small><a href="https://stripe.com/docs/testing#cards" target="_blank" class="text-decoration-none">(Testing Mode)</a></small>
 		</div>
 	</div>
 	<div class="row">
@@ -99,10 +100,25 @@
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Expiration Month</label> <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
                             </div>
-
                             <div class='col-xs-12 col-md-4 form-group expiration required'>
                                 <label class='control-label'>Expiration Year</label> <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
                             </div>
+                            <div class="col-xs-12 col-md-12">
+                                &nbsp;
+                            </div>
+                            <div class='col-xs-12 col-md-6 form-group'>
+                                <label class='control-label'><input type="checkbox" value="" checked disabled> 2024 Membership $45.00</label> <input type='hidden' name='memcharge' value='45'/>
+                            </div>
+                            <div class='col-xs-12 col-md-6 form-group'>
+                                <label class='control-label'><input type="checkbox" id="carrier" name="carrier" value="carrier"> The Carrier Hard Copy $18.00</label>
+                            </div>
+                            <div class='col-xs-12 col-md-12'>
+                                <hr>
+                            </div>
+                            <div class="col-xs-12 col-md-12">
+                                &nbsp;
+                            </div>
+
                         </div>
                         <div class='form-row row'>
                             <div class='col-md-12 error form-group hide'>
@@ -111,7 +127,7 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">Pay Now ($100)</button>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Payment</button>
                             </div>
                         </div>
                     </form>

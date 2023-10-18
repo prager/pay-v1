@@ -25,6 +25,11 @@ class StripeController extends CI_Controller {
      * @return Response
     */
     public function index() {
+	// retrieve values from uri
+
+	// retrieve values from db
+
+	// pass values for membership year, sum charged	
         $this->load->view('my_stripe');
     }
 
@@ -34,15 +39,16 @@ class StripeController extends CI_Controller {
     */
     public function stripePost() {
 		try {
+			$chargedVal = intval($this->input->post('memcharge'));
 			require_once('application/libraries/stripe-php/init.php');
 			\Stripe\Stripe::setApiKey($this->config->item('stripe_secret'));
 			\Stripe\Charge::create ([
-					"amount" => 100 * 100,
+					"amount" => $chargedVal * 100,
 					"currency" => "usd",
 					"source" => $this->input->post('stripeToken'),
-					"description" => "Test payment from JLK Consulting" 
+					"description" => "Testing Pay-v1 New" 
 			]);
-			$this->session->set_flashdata('success', 'Payment made successfully.');
+			$this->session->set_flashdata('success', 'Payment processed successfully.');
 			redirect(base_url() . 'index.php/my-stripe', 'refresh');
 		}
 		catch (\Stripe\Exception\CardException $e) {
