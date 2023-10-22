@@ -6,9 +6,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <style type="text/css">
 
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        h2 {
+            font-weight: bold;
+        }
+
         .panel-title {
-        display: inline;
-        font-weight: bold;
+            display: inline;
+            font-weight: bold;
+            font-size: 20px;
         }
 
         .display-table {
@@ -22,15 +32,26 @@
         .display-td {
             display: table-cell;
             vertical-align: middle;
-            width: 61%;
+            width: 70%;
+        }
+
+        .lbl-font {
+
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
 <div class="container">
 	<div class="row">
-		<div class="col co-md-offset-3 text-center">
-			<h1>JLK Payments</h1>
+		<div class="col text-center">
+            <?php 
+                $payType = '';
+                if($payment_type == 'mdarc-payment') {
+                    $payType = 'MDARC';
+                }
+            ?>
+			<h2><?php echo $payType; ?> Payments</h2>
 			Inspired by <a href="https://www.itsolutionstuff.com/post/stripe-payment-gateway-integration-in-codeigniter-exampleexample.html" target="_blank">Hardik Savani</a><br>
             <small><a href="https://stripe.com/docs/testing#cards" target="_blank" class="text-decoration-none">(Testing Mode)</a></small>
 		</div>
@@ -39,17 +60,16 @@
 		<div class="col">&nbsp;</div>
 	</div>
     <div class="row mt-3">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default credit-card-box">
                 <div class="panel-heading display-table" >
                     <div class="row display-tr" >
-                        <h3 class="panel-title display-td">Payment Details</h3>
+                        <h2 class="panel-title display-td">Payment Details</h2>
                         <div class="display-td" >
                             <img class="img-responsive pull-right" src="https://files.kulisek.org/cc.png">
                         </div>
                     </div> 
                 </div>
-
                 <div class="panel-body">
                     <?php if($this->session->flashdata('success')){ ?>
                     <div class="alert alert-success text-center">
@@ -61,64 +81,82 @@
                     <form role="form" action="<?php echo base_url(); ?>index.php/stripePost" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="<?php echo $this->config->item('stripe_key') ?>" id="payment-form">
 					
                         <div class='form-row row'>
-                            <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Name on Card</label> <input class='form-control' size='4' type='text'>
+                            <div class='col-sm-12 form-group required'>
+                                <label>Name on Card</label> <input class='form-control' size='4' type='text'>
                             </div>
                         </div>
 
 						<div class='form-row row'>
-                            <div class='col-xs-12 form-group'>
-                                <label class='control-label'>Street Address</label> <input class='form-control' size='4' type='text'>
+                            <div class='col-sm-12 form-group'>
+                                <label>Street Address</label> <input class='form-control' size='4' type='text'>
                             </div>
                         </div>
 
 						<div class='form-row row'>
-                            <div class='col-xs-12 col-md-4 form-group'>
-                                <label class='control-label'>City</label> <input class='form-control' size='18' type='text'>
+                            <div class='col-sm-12 col-md-4 form-group'>
+                                <label>City</label> <input class='form-control' size='18' type='text'>
                             </div>
 
-                            <div class='col-xs-12 col-md-4 form-group'>
-                                <label class='control-label'>State</label> <input class='form-control' size='2' type='text'>
+                            <div class='col-sm-12 col-md-4 form-group'>
+                                <label>State</label> <input class='form-control' size='2' type='text'>
                             </div>
 
-                            <div class='col-xs-12 col-md-4 form-group'>
-                                <label class='control-label'>Zip</label> <input class='form-control' size='5' type='text'>
+                            <div class='col-sm-12 col-md-4 form-group'>
+                                <label>Zip</label> <input class='form-control' size='5' type='text'>
                             </div>
                         </div>
 
                         <div class='form-row row'>
-                            <div class='col-xs-12 form-group card required'>
-                                <label class='control-label'>Card Number</label> <input autocomplete='off' class='form-control card-number' size='20' type='text'>
+                            <div class='col-sm-12 form-group card required'>
+                                <label>Card Number</label> <input autocomplete='off' class='form-control card-number' size='20' type='text'>
 							</div>
                         </div>
 
                         <div class='form-row row'>
-                            <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label> <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
+                            <div class='col-sm-12 col-md-4 form-group cvc required'>
+                                <label>CVC</label> <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='4' type='text'>
                             </div>
 
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Month</label> <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
+                            <div class='col-sm-12 col-md-4 form-group expiration required'>
+                                <label>Expiration Month</label> <input class='form-control card-expiry-month' placeholder='MM' size='2' type='text'>
                             </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Year</label> <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
+                            <div class='col-sm-12 col-md-4 form-group expiration required'>
+                                <label>Expiration Year</label> <input class='form-control card-expiry-year' placeholder='YYYY' size='4' type='text'>
                             </div>
-                            <div class="col-xs-12 col-md-12">
+                            <div class="col-sm-12 col-md-12">
                                 &nbsp;
                             </div>
-                            <div class='col-xs-12 col-md-6 form-group'>
-                                <label class='control-label'><input type="checkbox" value="" checked disabled> 2024 Membership $45.00</label> <input type='hidden' name='memcharge' value='45'/>
+                            <div class='col-sm-12 col-md-4 form-group'>
+                                <?php
+                                    $actionTxt = '';
+                                    if($action == 'renewal') {
+                                        $actionTxt = ' ' . $cur_year . ' Membership'; ?>
+                                        <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['membership'], 2); ?></label> 
+                                        <input type='hidden' name='memcharge' value= <?php echo strval($charges['membership']); ?>/>
+                                        <input type='hidden' name='action' value=<?php echo $action; ?>/>
+                                <?php    }  ?>
                             </div>
-                            <div class='col-xs-12 col-md-6 form-group'>
-                                <label class='control-label'><input type="checkbox" id="carrier" name="carrier" value="carrier"> The Carrier Hard Copy $18.00</label>
-                            </div>
-                            <div class='col-xs-12 col-md-12'>
+                            <?php if($charges['carrier'] > 0) { ?>
+                                <div class='col-sm-12 col-md-4 form-group'>
+                                            <label><input type="checkbox" id="carrier" name="carrier" checked disabled> Mail The Carrier $<?php echo strval(number_format($charges['carrier'], 2)); ?></label>
+                                            <input type='hidden' name='carrier' value=<?php echo strval($charges['carrier']); ?>/>
+                                </div>
+                            <?php }?>
+                            <?php if($charges['repeater'] > 0) { ?>
+                                <div class='col-sm-12 col-md-4 form-group'>
+                                            <label><input type="checkbox" id="repeater" name="repeater" checked disabled> Donation (repeater) $<?php echo strval(number_format($charges['repeater'], 2)); ?></label>
+                                            <input type='hidden' name='repeater' value=<?php echo strval($charges['repeater']); ?>/>
+                                </div>
+                            <?php }?>
+                            <div class='col-sm-12 col-md-12'>
                                 <hr>
                             </div>
-                            <div class="col-xs-12 col-md-12">
+                            <div class="col-sm-12 col-md-12 text-center">
+                                <label>Total charges: $<?php echo number_format($charges['membership'] + $charges['carrier'] + $charges['repeater'],2); ?></label>
+                            </div>
+                            <div class="col-sm-12 col-md-12">
                                 &nbsp;
                             </div>
-
                         </div>
                         <div class='form-row row'>
                             <div class='col-md-12 error form-group hide'>
@@ -126,7 +164,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-sm-12">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Payment</button>
                             </div>
                         </div>

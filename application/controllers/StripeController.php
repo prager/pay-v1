@@ -26,11 +26,16 @@ class StripeController extends CI_Controller {
     */
     public function index() {
 	// retrieve values from uri
+		$data['payment_type'] = $this->uri->segment(1);
+		$data['action'] = $this->uri->segment(2);
+		$data['cur_year'] = '2024';
 
+	// temp test values
+		$data['charges'] = array("membership" => 45.00, "carrier" => 18, "repeater" => 22);
 	// retrieve values from db
 
 	// pass values for membership year, sum charged	
-        $this->load->view('my_stripe');
+        $this->load->view('my_stripe', $data);
     }
 
     /**
@@ -39,17 +44,22 @@ class StripeController extends CI_Controller {
     */
     public function stripePost() {
 		try {
-			$chargedVal = intval($this->input->post('memcharge'));
+			$memVal = intval($this->input->post('memcharge'));
+			$carrVal = intval($this->input->post('carrier'));
+			$repVal = intval($this->input->post('repeater'));
+			$totCharge = $memVal + $carrVal + $repVal;
+			echo 'total charge: ' . $totCharge;
 			require_once('application/libraries/stripe-php/init.php');
 			\Stripe\Stripe::setApiKey($this->config->item('stripe_secret'));
 			\Stripe\Charge::create ([
-					"amount" => $chargedVal * 100,
+					"amount" => $totCharge * 100,
 					"currency" => "usd",
 					"source" => $this->input->post('stripeToken'),
-					"description" => "Testing Pay-v1 New" 
+					"description" => "Testing Pay-v1 " . $this->input->post('action')
 			]);
-			$this->session->set_flashdata('success', 'Payment processed successfully.');
-			redirect(base_url() . 'index.php/my-stripe', 'refresh');
+			//$this->session->set_flashdata('success', 'Payment processed successfully.');
+			//redirect(base_url() . 'index.php/mdarc-payment/confirmed', 'refresh');
+			redirect('https://mdarc-dev.jlkconsulting.info/index.php/member');
 		}
 		catch (\Stripe\Exception\CardException $e) {
 			  // Since it's a decline, \Stripe\Exception\CardException will be caught

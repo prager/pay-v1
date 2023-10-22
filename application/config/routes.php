@@ -49,10 +49,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'StripeController';
+$route['default_controller'] = 'welcome';
 $route['welcome'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['my-stripe'] = "StripeController";
+$route['mdarc-payment/(:any)/(:any)'] = "StripeController";
+$route['mdarc-payment/(:any)'] = "StripeController";
 $route['stripePost']['post'] = "StripeController/stripePost";
