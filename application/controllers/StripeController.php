@@ -38,6 +38,10 @@ class StripeController extends CI_Controller {
         $this->load->view('my_stripe', $data);
     }
 
+	public function about() {
+		$this->load->view('readme');
+	}
+
     /**
      * Get All Data from this method.
      * @return Response

@@ -48,12 +48,10 @@
             <?php 
                 $payType = '';
                 if($payment_type == 'mdarc-payment') {
-                    $payType = 'MDARC';
+                    $payType = 'MDARC Payments';
                 }
             ?>
-			<h2><?php echo $payType; ?> Payments</h2>
-			Inspired by <a href="https://www.itsolutionstuff.com/post/stripe-payment-gateway-integration-in-codeigniter-exampleexample.html" target="_blank">Hardik Savani</a><br>
-            <small><a href="https://stripe.com/docs/testing#cards" target="_blank" class="text-decoration-none">(Testing Mode)</a></small>
+			<h2><?php echo $payType; ?></h2>
 		</div>
 	</div>
 	<div class="row">
@@ -171,6 +169,24 @@
                     </form>
                 </div>
             </div> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            &nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-ms-10 col-md-offset-1">
+            <hr>
+        </div>
+    </div>
+    <div class="row mt-1">
+        <div class="col-sm-4 col-md-offset-2">
+            &copy; <a href="https://jlkconsulting.info" target="_blank">JLK Consulting</a>
+        </div>
+        <div class="col-sm-4 text-right">
+            <a href="https://stripe.com/docs/testing#cards" target="_blank" class="text-decoration-none">Testing Mode</a> | <a href="<?php echo base_url();?>index.php/about" target="_blank">About</a>
         </div>
     </div>
 </div>
