@@ -28,10 +28,12 @@ class StripeController extends CI_Controller {
 	// retrieve values from uri
 		$data['payment_type'] = $this->uri->segment(1);
 		$data['action'] = $this->uri->segment(2);
+		$id = intval($this->uri->segment(3));
+		$data['member'] = $this->Manager_model->get_member($id);
 		$data['cur_year'] = '2024';
 
 	// temp test values
-		$data['charges'] = array("membership" => 45.00, "carrier" => 18, "repeater" => 0);
+		$data['charges'] = array("membership" => 45.00, "carrier" => 0, "repeater" => 10, "mdarc" => 25);
 	// retrieve values from db
 
 	// pass values for membership year, sum charged	
@@ -51,16 +53,19 @@ class StripeController extends CI_Controller {
 			$memVal = intval($this->input->post('memcharge'));
 			$carrVal = intval($this->input->post('carrier'));
 			$repVal = intval($this->input->post('repeater'));
-			$totCharge = $memVal + $carrVal + $repVal;
+			$mdarcVal = intval($this->input->post('mdarc'));
+			$totCharge = $memVal + $carrVal + $repVal + $mdarcVal;
 			require_once('application/libraries/stripe-php/init.php');
-			\Stripe\Stripe::setApiKey($this->config->item('stripe_secret'));
+			\Stripe\Stripe::setApiKey($this->config->item('mdarc_secret'));
 			\Stripe\Charge::create ([
 					"amount" => $totCharge * 100,
 					"currency" => "usd",
 					"source" => $this->input->post('stripeToken'),
 					"description" => "Testing Pay-v1 " . $this->input->post('action')
 			]);
-			$this->load->view('payment_ok');
+			//$this->load->view('payment_ok');
+			header("Location: https://mdarc-dev.jlkconsulting.info/index.php/member");
+			exit;
 		}
 		catch (\Stripe\Exception\CardException $e) {
 			  // Since it's a decline, \Stripe\Exception\CardException will be caught

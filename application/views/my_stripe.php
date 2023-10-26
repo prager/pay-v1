@@ -76,31 +76,31 @@
                         </div>
                     <?php } ?>
 
-                    <form role="form" action="<?php echo base_url(); ?>index.php/stripePost" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="<?php echo $this->config->item('stripe_key') ?>" id="payment-form">
+                    <form role="form" action="<?php echo base_url(); ?>index.php/stripePost" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="<?php echo $this->config->item('mdarc_key') ?>" id="payment-form">
 					
                         <div class='form-row row'>
                             <div class='col-sm-12 form-group required'>
-                                <label>Name on Card</label> <input class='form-control' size='4' type='text'>
+                                <label>Name on Card</label> <input class="form-control" size="4" type="text" value="<?php echo $member->fname . ' ' . $member->lname; ?>">
                             </div>
                         </div>
 
 						<div class='form-row row'>
                             <div class='col-sm-12 form-group'>
-                                <label>Street Address</label> <input class='form-control' size='4' type='text'>
+                                <label>Street Address</label> <input class="form-control" size="4" type="text" value="<?php echo $member->address; ?>">
                             </div>
                         </div>
 
 						<div class='form-row row'>
                             <div class='col-sm-12 col-md-4 form-group'>
-                                <label>City</label> <input class='form-control' size='18' type='text'>
+                                <label>City</label> <input class="form-control" size="18" type="text" value="<?php echo $member->city; ?>">
                             </div>
 
                             <div class='col-sm-12 col-md-4 form-group'>
-                                <label>State</label> <input class='form-control' size='2' type='text'>
+                                <label>State</label> <input class="form-control" size="2" type="text" value="<?php echo $member->state; ?>">
                             </div>
 
                             <div class='col-sm-12 col-md-4 form-group'>
-                                <label>Zip</label> <input class='form-control' size='5' type='text'>
+                                <label>Zip</label> <input class="form-control" size="5" type="text" value="<?php echo $member->zip; ?>">
                             </div>
                         </div>
 
@@ -124,6 +124,9 @@
                             <div class="col-sm-12 col-md-12">
                                 &nbsp;
                             </div>
+                            <div class='col-sm-12 col-md-2 form-group'>
+                                &nbsp;
+                            </div>
                             <div class='col-sm-12 col-md-4 form-group'>
                                 <?php
                                     $actionTxt = '';
@@ -132,25 +135,42 @@
                                         <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['membership'], 2); ?></label> 
                                         <input type='hidden' name='memcharge' value= <?php echo strval($charges['membership']); ?>/>
                                         <input type='hidden' name='action' value=<?php echo $action; ?>/>
-                                <?php    }  ?>
+                                
+                                <?php    }  
+                                    if($action == 'donation') {
+                                        if($charges['repeater'] > 0)
+                                        $actionTxt = 'Donation (repeater)'; ?>
+                                        <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['repeater'], 2); ?></label>
+                                
+                                <?php } ?>
                             </div>
-                            <?php if($charges['carrier'] > 0) { ?>
-                                <div class='col-sm-12 col-md-4 form-group'>
-                                            <label><input type="checkbox" id="carrier" name="carrier" checked disabled> Mail The Carrier $<?php echo strval(number_format($charges['carrier'], 2)); ?></label>
-                                            <input type='hidden' name='carrier' value=<?php echo strval($charges['carrier']); ?>/>
-                                </div>
-                            <?php }?>
-                            <?php if($charges['repeater'] > 0) { ?>
-                                <div class='col-sm-12 col-md-4 form-group'>
-                                            <label><input type="checkbox" id="repeater" name="repeater" checked disabled> Donation (repeater) $<?php echo strval(number_format($charges['repeater'], 2)); ?></label>
-                                            <input type='hidden' name='repeater' value=<?php echo strval($charges['repeater']); ?>/>
-                                </div>
-                            <?php }?>
+                            <div class='col-sm-12 col-md-4 form-group'>
+                                <label><input type="checkbox" id="carrier" name="carrier" checked disabled> Mail The Carrier $<?php echo strval(number_format($charges['carrier'], 2)); ?></label>
+                                <input type='hidden' name='carrier' value=<?php echo strval($charges['carrier']); ?>/>
+                            </div>
+                            
+                            <div class='col-sm-12 col-md-12'>
+                                &nbsp;
+                            </div>
+                            <div class='col-sm-12 col-md-2 form-group'>
+                                &nbsp;
+                            </div>
+                            <div class="col-sm-12 col-md-4 form-group">                                    
+                                <?php $actionTxt = ' Donation (MDARC)'; ?>
+                                    <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['mdarc'], 2); ?></label>
+                                    <input type='hidden' name='mdarc' value=<?php echo strval($charges['mdarc']); ?>/>
+                            </div> 
+                        
+                            <div class="col-sm-12 col-md-4 form-group">                                    
+                                <?php $actionTxt = ' Donation (repeater)'; ?>
+                                    <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['repeater'], 2); ?></label>
+                                    <input type='hidden' name='repeater' value=<?php echo strval($charges['repeater']); ?>/>
+                            </div> 
                             <div class='col-sm-12 col-md-12'>
                                 <hr>
                             </div>
                             <div class="col-sm-12 col-md-12 text-center">
-                                <label>Total charges: $<?php echo number_format($charges['membership'] + $charges['carrier'] + $charges['repeater'],2); ?></label>
+                                <label>Total charges: $<?php echo number_format($charges['membership'] + $charges['carrier'] + $charges['repeater'] + $charges['mdarc'],2); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-12">
                                 &nbsp;
