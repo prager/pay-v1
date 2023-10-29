@@ -3,7 +3,9 @@
 <head>
     <title>Pay v1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!-- MDARC icon -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="<?php echo base_url() ;?>assets/img/mdarc-icon.ico" type="image/x-icon" />
     <style type="text/css">
 
         body {
@@ -49,6 +51,10 @@
                 $payType = '';
                 if($payment_type == 'mdarc-payment') {
                     $payType = 'MDARC Payments';
+                }
+
+                if($payment_type == 'donation') {
+                    $payType = 'Donation to MDARC';
                 }
             ?>
 			<h2><?php echo $payType; ?></h2>
@@ -124,43 +130,34 @@
                             <div class="col-sm-12 col-md-12">
                                 &nbsp;
                             </div>
-                            <div class='col-sm-12 col-md-2 form-group'>
-                                &nbsp;
-                            </div>
-                            <div class='col-sm-12 col-md-4 form-group'>
-                                <?php
-                                    $actionTxt = '';
-                                    if($action == 'renewal') {
-                                        $actionTxt = ' ' . $cur_year . ' Membership'; ?>
+                            <?php   
+                            $actionTxt = '';
+                            if($action == 'renewal') { ?>
+                                <div class="col-sm-12 col-md-2">
+                                    &nbsp;
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <?php $actionTxt = ' ' . $cur_year . ' Membership'; ?>
                                         <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['membership'], 2); ?></label> 
                                         <input type='hidden' name='memcharge' value= <?php echo strval($charges['membership']); ?>/>
                                         <input type='hidden' name='action' value=<?php echo $action; ?>/>
-                                
-                                <?php    }  
-                                    if($action == 'donation') {
-                                        if($charges['repeater'] > 0)
-                                        $actionTxt = 'Donation (repeater)'; ?>
-                                        <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['repeater'], 2); ?></label>
-                                
-                                <?php } ?>
-                            </div>
-                            <div class='col-sm-12 col-md-4 form-group'>
-                                <label><input type="checkbox" id="carrier" name="carrier" checked disabled> Mail The Carrier $<?php echo strval(number_format($charges['carrier'], 2)); ?></label>
-                                <input type='hidden' name='carrier' value=<?php echo strval($charges['carrier']); ?>/>
-                            </div>
-                            
-                            <div class='col-sm-12 col-md-12'>
+                                </div>
+                                <div class="col-sm-12 col-md-4 form-group">
+                                    <label><input type="checkbox" id="carrier" name="carrier" checked disabled> Mail The Carrier $<?php echo strval(number_format($charges['carrier'], 2)); ?></label>
+                                    <input type='hidden' name='carrier' value=<?php echo strval($charges['carrier']); ?>/>                            
+                                </div>
+                            <?php    }  ?>
+                            <div class="col-sm-12 col-md-12">
                                 &nbsp;
-                            </div>
-                            <div class='col-sm-12 col-md-2 form-group'>
+                            </div> 
+                            <div class="col-sm-12 col-md-2">
                                 &nbsp;
                             </div>
                             <div class="col-sm-12 col-md-4 form-group">                                    
                                 <?php $actionTxt = ' Donation (MDARC)'; ?>
                                     <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['mdarc'], 2); ?></label>
                                     <input type='hidden' name='mdarc' value=<?php echo strval($charges['mdarc']); ?>/>
-                            </div> 
-                        
+                            </div>
                             <div class="col-sm-12 col-md-4 form-group">                                    
                                 <?php $actionTxt = ' Donation (repeater)'; ?>
                                     <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['repeater'], 2); ?></label>
@@ -201,12 +198,17 @@
             <hr>
         </div>
     </div>
-    <div class="row mt-1">
+    <div class="row">
         <div class="col-sm-4 col-md-offset-2">
             &copy; <a href="https://jlkconsulting.info" target="_blank">JLK Consulting</a>
         </div>
         <div class="col-sm-4 text-right">
             <a href="https://stripe.com/docs/testing#cards" target="_blank" class="text-decoration-none">Testing Mode</a> | <a href="<?php echo base_url();?>index.php/about" target="_blank">About</a>
+        </div>
+    </div>
+    <div class="row" style="height: 60px; ">
+        <div class="col">
+            &nbsp;
         </div>
     </div>
 </div>

@@ -29,12 +29,20 @@ class StripeController extends CI_Controller {
 		$data['payment_type'] = $this->uri->segment(1);
 		$data['action'] = $this->uri->segment(2);
 		$id = intval($this->uri->segment(3));
-		$data['member'] = $this->Manager_model->get_member($id);
-		$data['cur_year'] = '2024';
 
+	// must retrieve payment data from mem_payments table
+		$paydata = $this->Manager_model->get_paydata('c9e496a3b7dc96cf27f414ef');
+		$data['member'] = $this->Manager_model->get_member($paydata['id_member']);
+
+	// this is not correct. need a function to get the correct cur_year
+		$data['cur_year'] = $data['member']->cur_year + 1;
 	// temp test values
-		$data['charges'] = array("membership" => 45.00, "carrier" => 0, "repeater" => 10, "mdarc" => 25);
-	// retrieve values from db
+		if($data['action'] == 'renewal') {
+			$data['charges'] = array("membership" => $paydata['renewal'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
+		}
+		else {
+			$data['charges'] = array("membership" => 0, "carrier" => 0, "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
+		}
 
 	// pass values for membership year, sum charged	
         $this->load->view('my_stripe', $data);
