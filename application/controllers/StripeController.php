@@ -28,21 +28,24 @@ class StripeController extends CI_Controller {
 	// retrieve values from uri
 		$data['payment_type'] = $this->uri->segment(1);
 		$data['action'] = $this->uri->segment(2);
-		$id = intval($this->uri->segment(3));
+		$idStr = $this->uri->segment(3);
 
 	// must retrieve payment data from mem_payments table
-		$paydata = $this->Manager_model->get_paydata('c9e496a3b7dc96cf27f414ef');
-		$data['member'] = $this->Manager_model->get_member($paydata['id_member']);
+		$paydata = $this->Manager_model->get_paydata($idStr);
+		$memData = $this->Manager_model->get_member($paydata['id_member']);
+		$data['member'] = $memData['member'];
 
 	// this is not correct. need a function to get the correct cur_year
-		$data['cur_year'] = $data['member']->cur_year + 1;
-	// temp test values
+		$data['cur_year'] = $memData['cur_year'];
+		
 		if($data['action'] == 'renewal') {
 			$data['charges'] = array("membership" => $paydata['renewal'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
 		}
 		else {
 			$data['charges'] = array("membership" => 0, "carrier" => 0, "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
 		}
+
+		$data['idStr'] = $idStr;
 
 	// pass values for membership year, sum charged	
         $this->load->view('my_stripe', $data);
@@ -58,10 +61,10 @@ class StripeController extends CI_Controller {
     */
     public function stripePost() {
 		try {
-			$memVal = intval($this->input->post('memcharge'));
-			$carrVal = intval($this->input->post('carrier'));
-			$repVal = intval($this->input->post('repeater'));
-			$mdarcVal = intval($this->input->post('mdarc'));
+			$memVal = floatval($this->input->post('memcharge'));
+			$carrVal = floatval($this->input->post('carrier'));
+			$repVal = floatval($this->input->post('repeater'));
+			$mdarcVal = floatval($this->input->post('mdarc'));
 			$totCharge = $memVal + $carrVal + $repVal + $mdarcVal;
 			require_once('application/libraries/stripe-php/init.php');
 			\Stripe\Stripe::setApiKey($this->config->item('mdarc_secret'));
@@ -72,6 +75,11 @@ class StripeController extends CI_Controller {
 					"description" => "Testing Pay-v1 " . $this->input->post('action')
 			]);
 			//$this->load->view('payment_ok');
+			$idStr = $this->input->post('idstr');
+			$param['idStr'] = substr($idStr, 0, strlen($idStr) - 1);
+			$param['cur_year'] = $this->input->post('cur_year');
+			$param['action'] = $this->input->post('action');
+			$this->Manager_model->save_paydata($param);
 			header("Location: https://mdarc-dev.jlkconsulting.info/index.php/member");
 			exit;
 		}

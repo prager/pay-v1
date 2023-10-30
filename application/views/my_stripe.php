@@ -140,7 +140,6 @@
                                     <?php $actionTxt = ' ' . $cur_year . ' Membership'; ?>
                                         <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['membership'], 2); ?></label> 
                                         <input type='hidden' name='memcharge' value= <?php echo strval($charges['membership']); ?>/>
-                                        <input type='hidden' name='action' value=<?php echo $action; ?>/>
                                 </div>
                                 <div class="col-sm-12 col-md-4 form-group">
                                     <label><input type="checkbox" id="carrier" name="carrier" checked disabled> Mail The Carrier $<?php echo strval(number_format($charges['carrier'], 2)); ?></label>
@@ -170,6 +169,9 @@
                                 <label>Total charges: $<?php echo number_format($charges['membership'] + $charges['carrier'] + $charges['repeater'] + $charges['mdarc'],2); ?></label>
                             </div>
                             <div class="col-sm-12 col-md-12">
+                                <input type='hidden' name='idstr' value=<?php echo $idStr; ?>/>
+                                <input type='hidden' name='action' value=<?php echo $action; ?>/>
+                                <input type='hidden' name='cur_year' value=<?php echo $cur_year; ?>/>
                                 &nbsp;
                             </div>
                         </div>
