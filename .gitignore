@@ -24,3 +24,5 @@ application/logs/*
 application/config/config.php
 application/config/config.php
 .vscode/sftp.json
+application/config/config.php
+application/config/config.php

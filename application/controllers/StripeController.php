@@ -79,6 +79,7 @@ class StripeController extends CI_Controller {
 			$param['idStr'] = substr($idStr, 0, strlen($idStr) - 1);
 			$param['cur_year'] = $this->input->post('cur_year');
 			$param['action'] = $this->input->post('action');
+			$param['carrVal'] = $carrVal;
 			$this->Manager_model->save_paydata($param);
 			header("Location: https://mdarc-dev.jlkconsulting.info/index.php/member");
 			exit;

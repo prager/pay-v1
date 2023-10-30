@@ -59,7 +59,12 @@ class Manager_model extends CI_Model {
 		$this->db->where('val_string', $param['idStr']);
 		$id_member = $this->db->get('mem_payments')->first_row()->id_member;
 		if($param['action'] == 'renewal/') {
-			$data = array('cur_year' => $param['cur_year'], 'paym_date' => time());
+			if($param['carrVal'] > 0) {
+				$data = array('cur_year' => $param['cur_year'], 'paym_date' => time(), 'hard_news' => 'TRUE');
+			}
+			else {
+				$data = array('cur_year' => $param['cur_year'], 'paym_date' => time());
+			}
 			$this->db->where('id_members', $id_member);
 			$this->db->update('tMembers', $data);
 		}
