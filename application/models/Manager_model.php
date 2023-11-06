@@ -30,26 +30,37 @@ class Manager_model extends CI_Model {
 		$retarr['mdarc_donation'] = 0;
 		$retarr['repeater_donation'] = 0;
 		$retarr['carrier'] = 0;
+		$retarr['id_member'] = 0;
 		$this->db->select('*');
 		$this->db->where('val_string', $valStr);
-		$retarr['id_member'] = $this->db->get('mem_payments')->first_row()->id_member;
-
-		$this->db->select('*');
-		$this->db->where('val_string', $valStr);
-		$payments = $this->db->get('mem_payments')->result();
-		foreach($payments as $payment) {
-			$paym = $payment->amount;
-			if($payment->id_payaction == 1) {
-				$retarr['renewal'] = $paym;
-			}
-			if($payment->id_payaction == 5) {
-				$retarr['repeater_donation'] = $paym;
-			}
-			if($payment->id_payaction == 7) {
-				$retarr['mdarc_donation'] = $paym;
-			}
-			if($payment->id_payaction == 10) {
-				$retarr['carrier'] = $paym;
+		$this->db->where('flag', 1);
+		$this->db->from('mem_payments');
+		$cnt = $this->db->count_all_results();
+		if($cnt > 0){
+			$retarr['id_member'] = $this->db->get('mem_payments')->last_row()->id_member;
+			$this->db->select('*');
+			$this->db->where('val_string', $valStr);
+			$payments = $this->db->get('mem_payments')->result();
+			foreach($payments as $payment) {
+				$paym = $payment->amount;
+				if($payment->id_payaction == 1) {
+					$retarr['renewal'] = $paym;
+				}
+				if($payment->id_payaction == 2 || $payment->id_payaction == 11) {
+					$retarr['new_mem'] = $paym;
+				}
+				if($payment->id_payaction == 5) {
+					$retarr['repeater_donation'] = $paym;
+				}
+				if($payment->id_payaction == 7) {
+					$retarr['mdarc_donation'] = $paym;
+				}
+				if($payment->id_payaction == 10) {
+					$retarr['carrier'] = $paym;
+				}
+				if($payment->id_payaction == 12) {
+					$retarr['public_renew'] = $paym;
+				}
 			}
 		}
 		return $retarr;
@@ -57,8 +68,9 @@ class Manager_model extends CI_Model {
 	public function save_paydata($param) {
 		$this->db->select('*');
 		$this->db->where('val_string', $param['idStr']);
+		$this->db->where('flag', 1);
 		$id_member = $this->db->get('mem_payments')->first_row()->id_member;
-		if($param['action'] == 'renewal/') {
+		if($param['action'] == 'renewal' || $param['action'] == 'new_mem' || $param['action'] == 'public_renew') {
 			if($param['carrVal'] > 0) {
 				$data = array('cur_year' => $param['cur_year'], 'paym_date' => time(), 'hard_news' => 'TRUE');
 			}
@@ -69,8 +81,15 @@ class Manager_model extends CI_Model {
 			$this->db->update('tMembers', $data);
 		}
 
-		$data = array('flag' => 0, 'result' => 'success');
+		$data = array('flag' => 0, 'result' => $param['status']);
 		$this->db->where('val_string', $param['idStr']);
 		$this->db->update('mem_payments', $data);
+	}
+	public function reset_flags(){
+		$this->db->select('*');
+		$this->db->where('paydate <', time() - 20);
+		$this->db->where('flag', 1);
+		$this->db->where('result', 'none_yet');
+		$this->db->update('mem_payments', array('flag'=> 0, 'result' => 'timed_out'));
 	}
 }

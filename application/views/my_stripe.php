@@ -3,7 +3,7 @@
 <head>
     <title>Pay v1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <!-- MDARC icon -->
+    <!-- MDARC icon v1 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="shortcut icon" href="<?php echo base_url() ;?>assets/img/mdarc-icon.ico" type="image/x-icon" />
     <style type="text/css">
@@ -75,18 +75,12 @@
                     </div> 
                 </div>
                 <div class="panel-body">
-                    <?php if($this->session->flashdata('success')){ ?>
-                    <div class="alert alert-success text-center">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                            <p><?php echo $this->session->flashdata('success'); ?></p>
-                        </div>
-                    <?php } ?>
-
                     <form role="form" action="<?php echo base_url(); ?>index.php/stripePost" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="<?php echo $this->config->item('mdarc_key') ?>" id="payment-form">
 					
                         <div class='form-row row'>
                             <div class='col-sm-12 form-group required'>
-                                <label>Name on Card</label> <input class="form-control" size="4" type="text" value="<?php echo $member->fname . ' ' . $member->lname; ?>">
+                                <label>Name on Card</label> 
+                                <input class="form-control" size="4" type="text" value="<?php echo $member->fname . ' ' . $member->lname; ?>">
                             </div>
                         </div>
 
@@ -132,7 +126,7 @@
                             </div>
                             <?php   
                             $actionTxt = '';
-                            if($action == 'renewal') { ?>
+                            if($action == 'renewal' || $action == 'new_mem' || $action == 'public_renew') { ?>
                                 <div class="col-sm-12 col-md-2">
                                     &nbsp;
                                 </div>
@@ -172,6 +166,8 @@
                                 <input type='hidden' name='idstr' value=<?php echo $idStr; ?>/>
                                 <input type='hidden' name='action' value=<?php echo $action; ?>/>
                                 <input type='hidden' name='cur_year' value=<?php echo $cur_year; ?>/>
+                                <input type='hidden' name='payment_type' value=<?php echo $payment_type; ?>/>
+                                <input type="hidden" name='cc_name' value="<?php echo $member->fname . ' ' . $member->lname; ?>">
                                 &nbsp;
                             </div>
                         </div>
@@ -181,8 +177,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-2">&nbsp;</div>
+                            <div class="col-sm-4">
                                 <button class="btn btn-primary btn-lg btn-block" type="submit">Submit Payment</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="https://mdarc-dev.jlkconsulting.info" type="button" class="btn btn-default btn-lg btn-block">Cancel Payment</a>
                             </div>
                         </div>
                     </form>

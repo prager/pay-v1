@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['mdarc-payment/(:any)/(:any)'] = "StripeController";
 $route['mdarc-payment/(:any)'] = "StripeController";
+$route['cancel-goback'] = "StripeController/go_back";
 $route['stripePost']['post'] = "StripeController/stripePost";
 
 $route['my-stripe'] = "TheStripe";
