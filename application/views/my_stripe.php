@@ -80,27 +80,27 @@
                         <div class='form-row row'>
                             <div class='col-sm-12 form-group required'>
                                 <label>Name on Card</label> 
-                                <input class="form-control" size="4" type="text" value="<?php echo $member->fname . ' ' . $member->lname; ?>">
+                                <input class="form-control" size="4" type="text" name="cc_name" value="<?php if($member->lname != 'NullMember') echo $member->fname . ' ' . $member->lname; ?>">
                             </div>
                         </div>
 
 						<div class='form-row row'>
                             <div class='col-sm-12 form-group'>
-                                <label>Street Address</label> <input class="form-control" size="4" type="text" value="<?php echo $member->address; ?>">
+                                <label>Street Address</label> <input class="form-control" size="4" type="text" value="<?php if($member->lname != 'NullMember') echo $member->address; ?>">
                             </div>
                         </div>
 
 						<div class='form-row row'>
                             <div class='col-sm-12 col-md-4 form-group'>
-                                <label>City</label> <input class="form-control" size="18" type="text" value="<?php echo $member->city; ?>">
+                                <label>City</label> <input class="form-control" size="18" type="text" value="<?php if($member->lname != 'NullMember') echo $member->city; ?>">
                             </div>
 
                             <div class='col-sm-12 col-md-4 form-group'>
-                                <label>State</label> <input class="form-control" size="2" type="text" value="<?php echo $member->state; ?>">
+                                <label>State</label> <input class="form-control" size="2" type="text" value="<?php if($member->lname != 'NullMember') echo $member->state; ?>">
                             </div>
 
                             <div class='col-sm-12 col-md-4 form-group'>
-                                <label>Zip</label> <input class="form-control" size="5" type="text" value="<?php echo $member->zip; ?>">
+                                <label>Zip</label> <input class="form-control" size="5" type="text" value="<?php if($member->lname != 'NullMember') echo $member->zip; ?>">
                             </div>
                         </div>
 
@@ -167,7 +167,7 @@
                                 <input type='hidden' name='action' value=<?php echo $action; ?>/>
                                 <input type='hidden' name='cur_year' value=<?php echo $cur_year; ?>/>
                                 <input type='hidden' name='payment_type' value=<?php echo $payment_type; ?>/>
-                                <input type="hidden" name='cc_name' value="<?php echo $member->fname . ' ' . $member->lname; ?>">
+                                <input type='hidden' name='lname' value=<?php echo $member->lname; ?>/>
                                 &nbsp;
                             </div>
                         </div>
@@ -200,6 +200,12 @@
             <hr>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col">
+            <?php //echo phpinfo(); ?>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-4 col-md-offset-2">
             &copy; <a href="https://jlkconsulting.info" target="_blank">JLK Consulting</a>
@@ -219,25 +225,25 @@
 <script type="text/javascript">
 
 $(function() {
-	var $form = $(".require-validation");
-  $('form.require-validation').bind('submit', function(e) {
-    var $form         = $(".require-validation"),
-        inputSelector = ['input[type=email]', 'input[type=password]',
-                         'input[type=text]', 'input[type=file]',
-                         'textarea'].join(', '),
-        $inputs       = $form.find('.required').find(inputSelector),
-        $errorMessage = $form.find('div.error'),
-        valid         = true;
-        $errorMessage.addClass('hide');
-        $('.has-error').removeClass('has-error');
-    $inputs.each(function(i, el) {
-      var $input = $(el);
-      if ($input.val() === '') {
-        $input.parent().addClass('has-error');
-        $errorMessage.removeClass('hide');
-        e.preventDefault();
-      }
-    });
+    var $form = $(".require-validation");
+    $('form.require-validation').bind('submit', function(e) {
+        var $form         = $(".require-validation"),
+            inputSelector = ['input[type=email]', 'input[type=password]',
+                            'input[type=text]', 'input[type=file]',
+                            'textarea'].join(', '),
+            $inputs       = $form.find('.required').find(inputSelector),
+            $errorMessage = $form.find('div.error'),
+            valid         = true;
+            $errorMessage.addClass('hide');
+            $('.has-error').removeClass('has-error');
+        $inputs.each(function(i, el) {
+        var $input = $(el);
+        if ($input.val() === '') {
+            $input.parent().addClass('has-error');
+            $errorMessage.removeClass('hide');
+            e.preventDefault();
+        }
+        });
 
     if (!$form.data('cc-on-file')) {
       e.preventDefault();

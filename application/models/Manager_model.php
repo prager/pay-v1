@@ -7,20 +7,18 @@ class Manager_model extends CI_Model {
 	}
 
     public function get_member($id) {
-        $this->db->select('*');
-	    $this->db->where('id_members', $id);
-		$memData = $this->db->get('tMembers')->row();
-		$retval['member'] = $memData;
-		if($memData->cur_year < intval(date('Y', time()))){
-			if(intval(date('m', time())) > 9){ 
-				$retval['cur_year'] = date('Y', time()) + 1;
-			} else {
-				$retval['cur_year'] = date('Y', time());
-			}
+
+		$this->db->select('*');
+		if($id != 0) {
+			$this->db->where('id_members', $id);
+			
 		}
 		else {
-			$retval['cur_year'] = $memData->cur_year + 1;
+			$this->db->where('lname', 'NullMember');
 		}
+		$memData = $this->db->get('tMembers')->row();
+		$retval['member'] = $memData;		
+		$retval['cur_year'] = $memData->cur_year;
 		return $retval;
     }
 

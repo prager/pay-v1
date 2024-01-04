@@ -33,35 +33,30 @@ class StripeController extends CI_Controller {
 		if($idStr != '')
 			{
 
-		// must retrieve payment data from mem_payments table
+		// must retrieve payment data from mem_payments table v2
 			$paydata = $this->Manager_model->get_paydata($idStr);
-			if($paydata['id_member'] == 0) {
-				echo 'There was a database error. Please, try again...';
+			$memData = $this->Manager_model->get_member($paydata['id_member']);
+			$data['member'] = $memData['member'];
+
+		// this is not correct. need a function to get the correct cur_year
+			$data['cur_year'] = $memData['cur_year'];
+			if($data['action'] == 'renewal') {
+				$data['charges'] = array("membership" => $paydata['renewal'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
 			}
-			else {
-				$memData = $this->Manager_model->get_member($paydata['id_member']);
-				$data['member'] = $memData['member'];
-
-			// this is not correct. need a function to get the correct cur_year
-				$data['cur_year'] = $memData['cur_year'];
-				if($data['action'] == 'renewal') {
-					$data['charges'] = array("membership" => $paydata['renewal'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
-				}
-				if($data['action'] == 'public_renew') {
-					$data['charges'] = array("membership" => $paydata['public_renew'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
-				}
-				else if($data['action'] == 'new_mem') {
-					$data['charges'] = array("membership" => $paydata['new_mem'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
-				}
-				else if($data['action'] == 'donation') {
-					$data['charges'] = array("membership" => 0, "carrier" => 0, "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
-				}
-
-				$data['idStr'] = $idStr;
-
-			// pass values for membership year, sum charged	
-				$this->load->view('my_stripe', $data);
+			if($data['action'] == 'public_renew') {
+				$data['charges'] = array("membership" => $paydata['public_renew'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
 			}
+			else if($data['action'] == 'new_mem') {
+				$data['charges'] = array("membership" => $paydata['new_mem'], "carrier" => $paydata['carrier'], "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
+			}
+			else if($data['action'] == 'donation') {
+				$data['charges'] = array("membership" => 0, "carrier" => 0, "repeater" => $paydata['repeater_donation'], "mdarc" => $paydata['mdarc_donation']);
+			}
+
+			$data['idStr'] = $idStr;
+
+		// pass values for membership year, sum charged	
+			$this->load->view('my_stripe', $data);
 		}
 		else {
 			echo 'Insufficient data!';
@@ -120,7 +115,13 @@ class StripeController extends CI_Controller {
 				}
 			}			
 			else if($param['action'] == 'donation') {
-				header("Location: https://mdarc-dev.jlkconsulting.info/index.php/member/donation_ok");
+				if($this->input->post('lname') == 'NullMember/') {
+					header("Location: https://mdarc-dev.jlkconsulting.info/index.php/donate");
+				} 
+				else {
+					header("Location: https://mdarc-dev.jlkconsulting.info/index.php/member/donation_ok");
+				}
+				
 			}
 			else if($param['action'] == 'new_mem') {
 				header("Location: https://mdarc-dev.jlkconsulting.info/index.php/new-member");
