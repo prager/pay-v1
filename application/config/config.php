@@ -538,3 +538,6 @@ $config['proxy_ips'] = '';
 | Inspired by: https://www.itsolutionstuff.com/post/stripe-payment-gateway-integration-in-codeigniter-exampleexample.html
 |
 */
+$config['mdarc_key'] = 'pk_test_51O2MgQKP3nABA0ZmjpcKkIRrTVQ5CNjSzLpLS01AE5B74BnGpXI878k7wZrupzVS1Oj6PSa49AxUkEA7HrujtckW00wSefyl8u';
+
+$config['mdarc_secret'] = 'sk_test_51O2MgQKP3nABA0ZmcCxV7O4eX9yndSvw0Q9DDpysJ49BjjDEDf2xflGs0osyLSOa0Ucb00PwMO5xudaecYyie2pj00W62uDKjX';

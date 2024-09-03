@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pay v1</title>
+    <title>Pay v1-0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <!-- MDARC icon v1 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -140,22 +140,21 @@
                                     <input type='hidden' name='carrier' value=<?php echo strval($charges['carrier']); ?>/>                            
                                 </div>
                             <?php    }  ?>
-                            <div class="col-sm-12 col-md-12">
-                                &nbsp;
-                            </div> 
-                            <div class="col-sm-12 col-md-2">
-                                &nbsp;
-                            </div>
-                            <div class="col-sm-12 col-md-4 form-group">                                    
-                                <?php $actionTxt = ' Donation (MDARC)'; ?>
-                                    <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['mdarc'], 2); ?></label>
-                                    <input type='hidden' name='mdarc' value=<?php echo strval($charges['mdarc']); ?>/>
-                            </div>
-                            <div class="col-sm-12 col-md-4 form-group">                                    
+                                <div class="row">&nbsp;</div>
+                                <div class="col-sm-12 col-md-2">
+                                    &nbsp;
+                                </div>
+                                <div class="col-sm-12 col-md-12 form-group">                                    
+                                    <?php $actionTxt = ' Total amount that will be charged for Donation to MDARC'; ?>
+                                        <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['mdarc'], 2); ?></label>
+                                        <input type='hidden' name='mdarc' value=<?php echo strval($charges['mdarc']); ?>/>
+                                </div>
+                            
+                            <!-- <div class="col-sm-12 col-md-4 form-group">                                    
                                 <?php $actionTxt = ' Donation (repeater)'; ?>
                                     <label><input type="checkbox" value="" checked disabled><?php echo $actionTxt ." $". number_format($charges['repeater'], 2); ?></label>
                                     <input type='hidden' name='repeater' value=<?php echo strval($charges['repeater']); ?>/>
-                            </div> 
+                            </div>  -->
                             <div class='col-sm-12 col-md-12'>
                                 <hr>
                             </div>

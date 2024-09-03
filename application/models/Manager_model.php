@@ -25,6 +25,7 @@ class Manager_model extends CI_Model {
 	public function get_paydata($valStr) {
 		$retarr['mdarc_mem'] = 0;
 		$retarr['renewal'] = 0;
+		$retarr['new_mem'] = 0;
 		$retarr['mdarc_donation'] = 0;
 		$retarr['repeater_donation'] = 0;
 		$retarr['carrier'] = 0;

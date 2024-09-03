@@ -32,8 +32,7 @@ class StripeController extends CI_Controller {
 		$idStr = $this->uri->segment(3);
 		if($idStr != '')
 			{
-
-		// must retrieve payment data from mem_payments table v2
+		// must retrieve payment data from mem_payments table
 			$paydata = $this->Manager_model->get_paydata($idStr);
 			$memData = $this->Manager_model->get_member($paydata['id_member']);
 			$data['member'] = $memData['member'];
